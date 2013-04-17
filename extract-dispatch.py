@@ -32,23 +32,23 @@ reader2 = csv.reader(f2, delimiter=',', quoting=csv.QUOTE_NONE)
 info_dict = {}
 
 for row in reader2:
+	# Skipping first line, which contains the headers
 	if reader2.line_num <2:
 		continue
-	if len(row)>19:
-		if len(row[2])<2 or len(row[6])<2 or len(row[7])<2 or len(row[8])<2 or len(row[9])<2:
-			print "Unknown characteristic(s) for "+str(row[13])+" on line "+str(reader2.line_num)
-		else:
-			current_info={}
-			current_info["participant"]=row[0]
-			current_info["station_name"]=row[1]
-			current_info["region"]=row[2][:-1]
-			current_info["fuel"]=row[7]
-			current_info["technology"]=row[9]
-			current_info["reg_capacity_mw"]=row[14]
-			current_info["co2_factor"]=row[19]
-			current_info["lon"]=row[17]
-			current_info["lat"]=row[18]
-			info_dict[row[13]] = dict(current_info)
+	# Considering only stations which have a proper dispatch ID (i.e. not '-')
+	if len(row[13])>1:
+		# Building the attributes dictionary (names and values) for this station
+		current_info={}
+		current_info["participant"]=row[0]
+		current_info["station_name"]=row[1]
+		current_info["region"]=row[2][:-1]
+		current_info["fuel"]=row[7]
+		current_info["technology"]=row[9]
+		current_info["reg_capacity_mw"]=row[14]
+		current_info["co2_factor"]=row[19]
+		current_info["lon"]=row[17]
+		current_info["lat"]=row[18]
+		info_dict[row[13]] = dict(current_info)
 
 f2.close()
 
@@ -77,7 +77,7 @@ try:
 				a = info_dict[duid]
 				info_dict[duid]["qty"]=str(round(qty,2))
 			else:
-				print 'No information available for DUID: '+str(duid)
+				print 'No information available for DUID: '+str(duid)+' (dispatching '+str(round(qty,2))+' MW)'
 finally:
 	zf.close()
 
