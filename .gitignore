@@ -1,5 +1,6 @@
 # Specific to this project
 *json
+total.txt
 
 #Python work/compiled
 *.py[cod]

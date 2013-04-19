@@ -44,6 +44,7 @@ for row in reader2:
 		current_info["region"]=row[2][:-1]
 		current_info["fuel"]=row[7]
 		current_info["technology"]=row[9]
+		current_info["class"]=row[5]
 		current_info["reg_capacity_mw"]=row[14]
 		current_info["co2_factor"]=row[19]
 		current_info["lon"]=row[17]
