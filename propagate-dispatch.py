@@ -25,7 +25,7 @@ def is_number(s):
 def send_json(j,dest):
 	j["auth_token"]=auth_token
 	data=json.dumps(j)
-	#print dest,data
+	print dest,data
 	req = urllib2.Request(url_widget+dest, data)
 	response = urllib2.urlopen(req)
 
@@ -125,7 +125,7 @@ send_json(data_array,"ALL")
 
 ## Lists
 data_array = {}
-data_array["title"]="Other fuels"
+data_array["title"]="Other fuels (MW)"
 data_array["items"]=[{"label":'Coal seam methane',"value":total['Coal Seam Methane']},{"label":"Coal tailings","value":total['Coal Tailings']},{"label":"Kerosene","value":total['Kerosene']},{"label":"Diesel","value":total['Diesel']},{"label":"Natural gas / fuel oil","value":total['Natural Gas / Fuel Oil']},{"label":"Natural gas / diesel","value":total['Natural Gas / Diesel']}]
 # Sending the ALL JSON
 send_json(data_array,"ALL_OTHERS")
