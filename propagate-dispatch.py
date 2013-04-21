@@ -70,7 +70,7 @@ share = {}
 total_all=total['All']
 for f in total:
 	if total_max[f] <> 0:
-		share[f] = str(round(total[f]/total_all*100,2))
+		share[f] = str(round(total[f]/total_all*100,1))
 	total[f] = str(int(round(total[f])))
 	total_max[f] = str(round(total_max[f]))
 
