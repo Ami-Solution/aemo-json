@@ -127,9 +127,9 @@ send_json(data_array,"ALL")
 other_fuel_list=[{"label":"Coal tailings","value":total['Coal Tailings']},{"label":"Kerosene","value":total['Kerosene']},{"label":"Diesel","value":total['Diesel']},{"label":"Natural gas / fuel oil","value":total['Natural Gas / Fuel Oil']},{"label":"Natural gas / diesel","value":total['Natural Gas / Diesel']}]
 sorted_other_fuel_list=sorted(other_fuel_list, key=lambda k: float(k['value']),reverse=True)
 
+# Only keeping the fuels that have a positive, non-null dispatch quantity
 pruned_list=[]
 for of in sorted_other_fuel_list:
-	print of["label"],of["value"],float(of["value"])
 	if float(of["value"]) > 0.0:
 		pruned_list.append(of)
 
