@@ -127,16 +127,22 @@ send_json(data_array,"ALL")
 other_fuel_list=[{"label":"Coal tailings","value":total['Coal Tailings']},{"label":"Kerosene","value":total['Kerosene']},{"label":"Diesel","value":total['Diesel']},{"label":"Natural gas / fuel oil","value":total['Natural Gas / Fuel Oil']},{"label":"Natural gas / diesel","value":total['Natural Gas / Diesel']}]
 sorted_other_fuel_list=sorted(other_fuel_list, key=lambda k: float(k['value']),reverse=True)
 
+pruned_list=[]
+for of in sorted_other_fuel_list:
+	print of["label"],of["value"],float(of["value"])
+	if float(of["value"]) > 0.0:
+		pruned_list.append(of)
+
 data_array = {}
 data_array["title"]="Other fuels (MW)"
-data_array["items"]=sorted_other_fuel_list
+data_array["items"]=pruned_list
 # Sending the ALL JSON
 send_json(data_array,"ALL_OTHERS")
 
 ## 
 
 # Sorting the fuels according to their share
-fuel_list=[{"label":"Coal Seam Gas","value":share['Coal Seam Methane']},{"label":'Black coal',"value":share['Black Coal']},{"label":'Brown coal',"value":share['Brown Coal']},{"label":'Natural gas',"value":share['Natural Gas']},{"label":'Hydro',"value":share['Water']},{"label":'Wind',"value":share['Wind']}]
+fuel_list=[{"label":"Coal seam gas","value":share['Coal Seam Methane']},{"label":'Black coal',"value":share['Black Coal']},{"label":'Brown coal',"value":share['Brown Coal']},{"label":'Natural gas',"value":share['Natural Gas']},{"label":'Hydro',"value":share['Water']},{"label":'Wind',"value":share['Wind']}]
 sorted_fuel_list=sorted(fuel_list, key=lambda k: float(k['value']),reverse=True)
 
 data_array = {}
