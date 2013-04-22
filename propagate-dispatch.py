@@ -11,6 +11,7 @@ file_emission_values = os.path.join(os.path.dirname(__file__),'total_emissions.t
 total = {'All':0}
 total_max = dict(total)
 co2_emissions = dict(total) 
+fuel_proper_name={'Black Coal':'Black coal','Coal Seam Methane':'Coal seam gas','Coal Tailings':'Coal tailings','Natural Gas':'Natural gas','Kerosene':'Kerosene','Brown Coal':'Brown coal','Diesel':'Diesel','Water':'Hydro','Natural Gas / Fuel Oil':'Natural gas (fuel oil)','Wind':'Wind','Natural Gas / Diesel':'Natural gas (diesel)','Landfill Methane / Landfill Gas':'Landfill gas','Bagasse':'Bagasse','Waste Coal Mine Gas':'Waste coal mine gas','Municipal and Industrial Materials':'Municipal & industrial materials','Sewerage/Waste Water':'Sewerage/waste water','Macadamia Nut Shells':'Macadamia nut shells'}
 
 fn, d = urllib.urlretrieve(url_json)
 f = open(fn,'r')
@@ -79,6 +80,7 @@ for s in sorted(json_data.keys()):
 	# By fuel-type
 	curr_fuel = json_data[s]['fuel']
 	if curr_fuel <>'':
+		curr_fuel = fuel_proper_name[curr_fuel]
 		if 'qty' in json_data[s]:
 			if curr_fuel in total:
 				total[curr_fuel] = total[curr_fuel] + float(json_data[s]['qty'])
@@ -117,38 +119,43 @@ print "CO2 share",co2_share
 
 # Sending additional request for groupings
 ##
+wind=fuel_proper_name['Wind']
 data_array = {}
-data_array["title"]="Wind"
-data_array["value"]=total['Wind']
-data_array["max"]=total_max['Wind']
+data_array["title"]=wind
+data_array["value"]=total[wind]
+data_array["max"]=total_max[wind]
 # Sending the ALL_WIND JSON
 send_json(data_array,"ALL_WIND")
 
+black_coal=fuel_proper_name['Black Coal']
 data_array = {}
-data_array["title"]="Black coal"
-data_array["value"]=total['Black Coal']
-data_array["max"]=total_max['Black Coal']
+data_array["title"]=black_coal
+data_array["value"]=total[black_coal]
+data_array["max"]=total_max[black_coal]
 # Sending the JSON
 send_json(data_array,"ALL_BLACK_COAL")
 
+natural_gas=fuel_proper_name['Natural Gas']
 data_array = {}
-data_array["title"]="Natural gas"
-data_array["value"]=total['Natural Gas']
-data_array["max"]=total_max['Natural Gas']
+data_array["title"]=natural_gas
+data_array["value"]=total[natural_gas]
+data_array["max"]=total_max[natural_gas]
 # Sending the JSON
 send_json(data_array,"ALL_NATURAL_GAS")
 
+brown_coal=fuel_proper_name['Brown Coal']
 data_array = {}
-data_array["title"]="Brown coal"
-data_array["value"]=total['Brown Coal']
-data_array["max"]=total_max['Brown Coal']
+data_array["title"]=brown_coal
+data_array["value"]=total[brown_coal]
+data_array["max"]=total_max[brown_coal]
 # Sending the JSON
 send_json(data_array,"ALL_BROWN_COAL")
 
+hydro=fuel_proper_name['Water']
 data_array = {}
-data_array["title"]="Hydro"
-data_array["value"]=total['Water']
-data_array["max"]=total_max['Water']
+data_array["title"]=hydro
+data_array["value"]=total[hydro]
+data_array["max"]=total_max[hydro]
 # Sending the JSON
 send_json(data_array,"ALL_WATER")
 
@@ -161,7 +168,8 @@ data_array["max"]=total_max['All']
 send_json(data_array,"ALL")
 
 ## Lists
-other_fuel_list=[{"label":"Coal tailings","value":total['Coal Tailings']},{"label":"Kerosene","value":total['Kerosene']},{"label":"Diesel","value":total['Diesel']},{"label":"Natural gas / fuel oil","value":total['Natural Gas / Fuel Oil']},{"label":"Natural gas / diesel","value":total['Natural Gas / Diesel']}]
+# Other fuels should be a dynamic list because different fuels kick in at different times
+other_fuel_list=[{"label":fuel_proper_name['Coal Tailings'],"value":total[fuel_proper_name['Coal Tailings']]},{"label":fuel_proper_name['Kerosene'],"value":total[fuel_proper_name['Kerosene']]},{"label":fuel_proper_name['Diesel'],"value":total[fuel_proper_name['Diesel']]},{"label":fuel_proper_name['Natural Gas / Fuel Oil'],"value":total[fuel_proper_name['Natural Gas / Fuel Oil']]},{"label":fuel_proper_name['Natural Gas / Diesel'],"value":total[fuel_proper_name['Natural Gas / Diesel']]}]
 sorted_other_fuel_list=sorted(other_fuel_list, key=lambda k: float(k['value']),reverse=True)
 
 # Only keeping the fuels that have a positive, non-null dispatch quantity
@@ -171,7 +179,7 @@ for of in sorted_other_fuel_list:
 		pruned_list.append(of)
 
 data_array = {}
-data_array["title"]="Other fuels (MW)"
+data_array["title"]="Other fuels"
 data_array["items"]=pruned_list
 # Sending the ALL JSON
 send_json(data_array,"ALL_OTHERS")
@@ -217,11 +225,11 @@ send_json(data_array,"CO2_SHARE")
 ## 
 
 # Sorting the fuels according to their share
-fuel_list=[{"label":"Coal seam gas","value":share['Coal Seam Methane']},{"label":'Black coal',"value":share['Black Coal']},{"label":'Brown coal',"value":share['Brown Coal']},{"label":'Natural gas',"value":share['Natural Gas']},{"label":'Hydro',"value":share['Water']},{"label":'Wind',"value":share['Wind']}]
+fuel_list=[{"label":fuel_proper_name['Coal Seam Methane'],"value":share[fuel_proper_name['Coal Seam Methane']]},{"label":fuel_proper_name['Black Coal'],"value":share[fuel_proper_name['Black Coal']]},{"label":fuel_proper_name['Brown Coal'],"value":share[fuel_proper_name['Brown Coal']]},{"label":fuel_proper_name['Natural Gas'],"value":share[fuel_proper_name['Natural Gas']]},{"label":fuel_proper_name['Water'],"value":share[fuel_proper_name['Water']]},{"label":fuel_proper_name['Wind'],"value":share[fuel_proper_name['Wind']]}]
 sorted_fuel_list=sorted(fuel_list, key=lambda k: float(k['value']),reverse=True)
 
 data_array = {}
-data_array["title"]="Power generation by fuel"
+data_array["title"]="Fuel share"
 data_array["items"]=sorted_fuel_list
 # Sending the ALL JSON
 send_json(data_array,"FUEL_SHARE")
@@ -229,7 +237,7 @@ send_json(data_array,"FUEL_SHARE")
 ## Graph
 pts = track_value_in_file(total['All'],file_total_values,576)
 data_array = {}
-data_array["title"]="Dispatched (MW)"
+data_array["title"]="Dispatched"
 data_array["points"]=pts
 # Sending the ALL JSON
 send_json(data_array,"GRAPH_ALL")
