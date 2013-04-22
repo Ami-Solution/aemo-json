@@ -179,7 +179,7 @@ send_json(data_array,"ALL_OTHERS")
 # CO2 intensities
 avg_co2_intensity = co2_intensity['All']
 data_array = {}
-data_array["title"]="Average CO2 emissions intensity"
+data_array["title"]="Overall CO2 emissions intensity"
 data_array["current"]=avg_co2_intensity
 # Sending the ALL JSON
 send_json(data_array,"CO2_AVG_INTENSITY")
@@ -193,7 +193,7 @@ for f in co2_intensity:
 sorted_co2_intensity=sorted(co2_intensity_list, key=lambda k: float(k['value']),reverse=True)
 print sorted_co2_intensity
 data_array = {}
-data_array["title"]="Fuel CO2 emissions intensity"
+data_array["title"]="CO2 emissions intensity by fuel"
 data_array["items"]=sorted_co2_intensity
 # Sending the ALL JSON
 send_json(data_array,"CO2_INTENSITY")
@@ -208,7 +208,7 @@ for f in co2_share:
 sorted_co2_share = sorted(co2_share_list, key=lambda k: float(k['value']),reverse=True)
 print sorted_co2_share
 data_array = {}
-data_array["title"]="Fuel CO2 emissions share"
+data_array["title"]="CO2 emissions by fuel"
 data_array["items"]=sorted_co2_share
 # Sending the ALL JSON
 send_json(data_array,"CO2_SHARE")
@@ -221,7 +221,7 @@ fuel_list=[{"label":"Coal seam gas","value":share['Coal Seam Methane']},{"label"
 sorted_fuel_list=sorted(fuel_list, key=lambda k: float(k['value']),reverse=True)
 
 data_array = {}
-data_array["title"]="Fuel share"
+data_array["title"]="Power generation by fuel"
 data_array["items"]=sorted_fuel_list
 # Sending the ALL JSON
 send_json(data_array,"FUEL_SHARE")
@@ -237,7 +237,7 @@ send_json(data_array,"GRAPH_ALL")
 # average CO2 intensity
 pts = track_value_in_file(avg_co2_intensity,file_emission_values,576)
 data_array = {}
-data_array["title"]="Emissions intensity"
+data_array["title"]="Carbon emissions intensity"
 data_array["points"]=pts
 # Sending the ALL JSON
 send_json(data_array,"GRAPH_EMISSIONS_INTENSITY") 
