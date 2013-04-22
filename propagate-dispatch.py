@@ -106,7 +106,7 @@ total_all=total['All']
 for f in total:
 	if total[f] <> 0.0:
 		share[f] = str(round(total[f]/total_all*100,1))
-		co2_intensity[f] = str(round(co2_emissions[f]/total[f],2))
+		co2_intensity[f] = str(round(co2_emissions[f]/total[f],3))
 	co2_share[f] = str(round(co2_emissions[f]/co2_emissions['All']*100,1))
 	total[f] = str(int(round(total[f]))).split('.')[0]
 	total_max[f] = str(round(total_max[f])).split('.')[0]
@@ -201,7 +201,7 @@ for f in co2_intensity:
 sorted_co2_intensity=sorted(co2_intensity_list, key=lambda k: float(k['value']),reverse=True)
 print sorted_co2_intensity
 data_array = {}
-data_array["title"]="CO2 emissions intensity by fuel"
+data_array["title"]="Carbon emissions intensity by fuel"
 data_array["items"]=sorted_co2_intensity
 # Sending the ALL JSON
 send_json(data_array,"CO2_INTENSITY")
@@ -216,7 +216,7 @@ for f in co2_share:
 sorted_co2_share = sorted(co2_share_list, key=lambda k: float(k['value']),reverse=True)
 print sorted_co2_share
 data_array = {}
-data_array["title"]="CO2 emissions by fuel"
+data_array["title"]="Carbon emissions by fuel"
 data_array["items"]=sorted_co2_share
 # Sending the ALL JSON
 send_json(data_array,"CO2_SHARE")
@@ -249,6 +249,34 @@ data_array["title"]="Carbon emissions intensity"
 data_array["points"]=pts
 # Sending the ALL JSON
 send_json(data_array,"GRAPH_EMISSIONS_INTENSITY") 
+
+
+# International list of average CO2 intensities
+world_avg_co2=[]
+world_avg_co2.append({"label":"Australia","value":avg_co2_intensity})
+
+url_json_co2_fr = "http://app.carbongis.com.au/rtem.fr/current_co2.json"
+fn, d = urllib.urlretrieve(url_json_co2_fr)
+f = open(fn,'r')
+json_data = json.load(f)
+f.close()
+world_avg_co2.append({"label":"France","value":str(round(float(json_data['Taux de Co2'])/1000,3))})
+
+url_json_co2_uk = "http://app.carbongis.com.au/rtem.uk/current_co2.json"
+fn, d = urllib.urlretrieve(url_json_co2_uk)
+f = open(fn,'r')
+json_data = json.load(f)
+f.close()
+world_avg_co2.append({"label":"UK","value":str(round(float(json_data['co2_intensity'])/1000,3))})
+
+world_avg_co2=sorted(world_avg_co2, key=lambda k: float(k['value']),reverse=True)
+print "World:",world_avg_co2
+
+data_array = {}
+data_array["title"]="Carbon emissions intensity by country"
+data_array["items"]=world_avg_co2
+# Sending the ALL JSON
+send_json(data_array,"WORLD_EMISSIONS_INTENSITY")
 
 
 
