@@ -1,7 +1,6 @@
 # Specific to this project
 *json
-total.txt
-log.txt
+*.txt
 
 #Python work/compiled
 *.py[cod]
