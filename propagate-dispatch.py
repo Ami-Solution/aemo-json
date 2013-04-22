@@ -29,7 +29,7 @@ def send_json(j,dest):
 	req = urllib2.Request(url_widget+dest, data)
 	response = urllib2.urlopen(req)
 
-for s in json_data:
+for s in sorted(json_data.keys()):
 	data_array = {}
 	data_array["title"]=json_data[s]['station_name']
 	if 'qty' in json_data[s]:
@@ -71,46 +71,46 @@ total_all=total['All']
 for f in total:
 	if total_max[f] <> 0:
 		share[f] = str(round(total[f]/total_all*100,1))
-	total[f] = str(int(round(total[f])))
-	total_max[f] = str(round(total_max[f]))
+	total[f] = str(int(round(total[f]))).split('.')[0]
+	total_max[f] = str(round(total_max[f])).split('.')[0]
 
-print total
-print total_max
-print share
+print "Total dispatched:",total
+print "Total capacity:",total_max
+print "Fuel share:",share
 
 # Sending additional request for groupings
 ##
 data_array = {}
 data_array["title"]="Wind"
-data_array["current"]=total['Wind']
+data_array["value"]=total['Wind']
 data_array["max"]=total_max['Wind']
 # Sending the ALL_WIND JSON
 send_json(data_array,"ALL_WIND")
 
 data_array = {}
 data_array["title"]="Black coal"
-data_array["current"]=total['Black Coal']
+data_array["value"]=total['Black Coal']
 data_array["max"]=total_max['Black Coal']
 # Sending the JSON
 send_json(data_array,"ALL_BLACK_COAL")
 
 data_array = {}
 data_array["title"]="Natural gas"
-data_array["current"]=total['Natural Gas']
+data_array["value"]=total['Natural Gas']
 data_array["max"]=total_max['Natural Gas']
 # Sending the JSON
 send_json(data_array,"ALL_NATURAL_GAS")
 
 data_array = {}
 data_array["title"]="Brown coal"
-data_array["current"]=total['Brown Coal']
+data_array["value"]=total['Brown Coal']
 data_array["max"]=total_max['Brown Coal']
 # Sending the JSON
 send_json(data_array,"ALL_BROWN_COAL")
 
 data_array = {}
 data_array["title"]="Hydro"
-data_array["current"]=total['Water']
+data_array["value"]=total['Water']
 data_array["max"]=total_max['Water']
 # Sending the JSON
 send_json(data_array,"ALL_WATER")
@@ -118,7 +118,7 @@ send_json(data_array,"ALL_WATER")
 ##
 data_array = {}
 data_array["title"]="Total"
-data_array["current"]=total['All']
+data_array["value"]=total['All']
 data_array["max"]=total_max['All']
 # Sending the ALL JSON
 send_json(data_array,"ALL")
