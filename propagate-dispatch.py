@@ -85,7 +85,10 @@ for s in sorted(json_data.keys()):
 		if 'qty' in json_data[s]:
 			if curr_fuel in total:
 				total[curr_fuel] = total[curr_fuel] + float(json_data[s]['qty'])
-				total_max[curr_fuel] = total_max[curr_fuel] + float(json_data[s]['reg_capacity_mw'])
+				if is_number(json_data[s]['reg_capacity_mw']):
+					total_max[curr_fuel] = total_max[curr_fuel] + float(json_data[s]['reg_capacity_mw'])
+				else:
+					print "Nameplate registered capacity for "+s+" is not a numeric"
 				if 'co2_factor' in json_data[s]:
 					if is_number(json_data[s]['co2_factor']):
 						if curr_fuel in co2_emissions:
@@ -94,7 +97,11 @@ for s in sorted(json_data.keys()):
 							co2_emissions[curr_fuel] = float(json_data[s]['qty']) * float(json_data[s]['co2_factor'])
 			else:
 				total[curr_fuel] = float(json_data[s]['qty'])
-				total_max[curr_fuel] = float(json_data[s]['reg_capacity_mw'])
+				if is_number(json_data[s]['reg_capacity_mw']):
+					total_max[curr_fuel] = float(json_data[s]['reg_capacity_mw'])
+				else:
+					print "Nameplate registered capacity for "+s+" is not a numeric"
+
 				if 'co2_factor' in json_data[s]:
 					if is_number(json_data[s]['co2_factor']):
 						co2_emissions[curr_fuel] = float(json_data[s]['qty']) * float(json_data[s]['co2_factor'])
@@ -110,7 +117,8 @@ for f in total:
 		co2_intensity[f] = str(round(co2_emissions[f]/total[f],3))
 	co2_share[f] = str(round(co2_emissions[f]/co2_emissions['All']*100,1))
 	total[f] = str(int(round(total[f]))).split('.')[0]
-	total_max[f] = str(round(total_max[f])).split('.')[0]
+	if total_max.has_key(f):
+		total_max[f] = str(round(total_max[f])).split('.')[0]
 
 print "Total dispatched:",total
 print "Total capacity:",total_max
