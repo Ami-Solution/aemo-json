@@ -7,6 +7,7 @@ url_widget = "http://app.carbongis.com.au:3030/widgets/"
 url_json = "http://app.carbongis.com.au/nem2json/dispatch.json"
 file_total_values = os.path.join(os.path.dirname(__file__),'total_generation.txt')
 file_emission_values = os.path.join(os.path.dirname(__file__),'total_emissions.txt')
+file_wind_capacity_factor = os.path.join(os.path.dirname(__file__),'wind_capacity_factor.txt')
 
 total = {'All':0}
 total_max = dict(total)
@@ -120,6 +121,7 @@ print "CO2 share",co2_share
 # Sending additional request for groupings
 ##
 wind=fuel_proper_name['Wind']
+wind_capacity_factor=str(round(float(total[wind])/float(total_max[wind])*100,1))
 data_array = {}
 data_array["title"]=wind
 data_array["value"]=total[wind]
@@ -241,6 +243,15 @@ data_array["title"]="Dispatched"
 data_array["points"]=pts
 # Sending the ALL JSON
 send_json(data_array,"GRAPH_ALL")
+
+
+pts = track_value_in_file(wind_capacity_factor,file_wind_capacity_factor,576)
+data_array = {}
+data_array["title"]="Wind capacity factor"
+data_array["points"]=pts
+# Sending the ALL JSON
+send_json(data_array,"GRAPH_WIND_CAPACITY_FACTOR")
+
 
 # average CO2 intensity
 pts = track_value_in_file(avg_co2_intensity,file_emission_values,576)
