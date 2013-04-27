@@ -42,6 +42,10 @@ def track_value_in_file(v,fn,nb):
 	with open(fn) as f:
 	    point_list = list(f.read().splitlines()[-nb:])
 
+	# rewriting these records in the text file
+	with open(fn,"w") as f:
+	    f.writelines(["%s\n" % item for item in point_list])
+
 	points = []
 	idx=1
 	for p in point_list:
