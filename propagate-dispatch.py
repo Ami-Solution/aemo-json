@@ -8,6 +8,7 @@ url_json = "http://app.carbongis.com.au/nem2json/dispatch.json"
 file_total_values = os.path.join(os.path.dirname(__file__),'graph_hist/total_generation.txt')
 file_emission_values = os.path.join(os.path.dirname(__file__),'graph_hist/total_emissions.txt')
 file_wind_capacity_factor = os.path.join(os.path.dirname(__file__),'graph_hist/wind_capacity_factor.txt')
+nb_hist=1152
 
 total = {'All':0}
 total_max = dict(total)
@@ -249,7 +250,7 @@ data_array["items"]=sorted_fuel_list
 send_json(data_array,"FUEL_SHARE")
 
 ## Graph
-pts = track_value_in_file(total['All'],file_total_values,576)
+pts = track_value_in_file(total['All'],file_total_values,nb_hist)
 data_array = {}
 data_array["title"]="Dispatched"
 data_array["points"]=pts
@@ -257,7 +258,7 @@ data_array["points"]=pts
 send_json(data_array,"GRAPH_ALL")
 
 
-pts = track_value_in_file(wind_capacity_factor,file_wind_capacity_factor,576)
+pts = track_value_in_file(wind_capacity_factor,file_wind_capacity_factor,nb_hist)
 data_array = {}
 data_array["title"]="Wind capacity factor"
 data_array["points"]=pts
@@ -266,7 +267,7 @@ send_json(data_array,"GRAPH_WIND_CAPACITY_FACTOR")
 
 
 # average CO2 intensity
-pts = track_value_in_file(avg_co2_intensity,file_emission_values,576)
+pts = track_value_in_file(avg_co2_intensity,file_emission_values,nb_hist)
 data_array = {}
 data_array["title"]="Carbon emissions intensity"
 data_array["points"]=pts
