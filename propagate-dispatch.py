@@ -5,9 +5,9 @@ import json
 auth_token = "app.carbongis.com.au"
 url_widget = "http://app.carbongis.com.au:3030/widgets/"
 url_json = "http://app.carbongis.com.au/nem2json/dispatch.json"
-file_total_values = os.path.join(os.path.dirname(__file__),'total_generation.txt')
-file_emission_values = os.path.join(os.path.dirname(__file__),'total_emissions.txt')
-file_wind_capacity_factor = os.path.join(os.path.dirname(__file__),'wind_capacity_factor.txt')
+file_total_values = os.path.join(os.path.dirname(__file__),'graph_hist/total_generation.txt')
+file_emission_values = os.path.join(os.path.dirname(__file__),'graph_hist/total_emissions.txt')
+file_wind_capacity_factor = os.path.join(os.path.dirname(__file__),'graph_hist/wind_capacity_factor.txt')
 
 total = {'All':0}
 total_max = dict(total)

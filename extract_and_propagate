@@ -1,5 +1,5 @@
 #!/bin/bash
 
-/usr/bin/python /usr/share/apache2/nem2json/extract-dispatch.py > /usr/share/apache2/nem2json/log-extract.txt
-/usr/bin/python /usr/share/apache2/nem2json/propagate-dispatch.py > /usr/share/apache2/nem2json/log-propagate.txt
+/usr/bin/python /usr/share/apache2/nem2json/extract-dispatch.py > /usr/share/apache2/nem2json/log/extract.txt
+/usr/bin/python /usr/share/apache2/nem2json/propagate-dispatch.py > /usr/share/apache2/nem2json/log/propagate.txt
 
