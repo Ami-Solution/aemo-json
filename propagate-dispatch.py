@@ -274,19 +274,27 @@ send_json(data_array,"GRAPH_EMISSIONS_INTENSITY")
 world_avg_co2=[]
 world_avg_co2.append({"label":"Australia","value":avg_co2_intensity})
 
-url_json_co2_fr = "http://app.carbongis.com.au/rtem.fr/current_co2.json"
+url_json_co2_fr = "http://app.carbongis.com.au/worldco2/fr/co2.json"
 fn, d = urllib.urlretrieve(url_json_co2_fr)
 f = open(fn,'r')
 json_data = json.load(f)
 f.close()
-world_avg_co2.append({"label":"France","value":str(round(float(json_data['Taux de Co2'])/1000,3))})
+world_avg_co2.append({"label":"France","value":str(json_data['co2_intensity'])})
 
-url_json_co2_uk = "http://app.carbongis.com.au/rtem.uk/current_co2.json"
+url_json_co2_uk = "http://app.carbongis.com.au/worldco2/uk/co2.json"
 fn, d = urllib.urlretrieve(url_json_co2_uk)
 f = open(fn,'r')
 json_data = json.load(f)
 f.close()
-world_avg_co2.append({"label":"UK","value":str(round(float(json_data['co2_intensity'])/1000,3))})
+world_avg_co2.append({"label":"UK","value":str(json_data['co2_intensity'])})
+
+url_json_co2_ie = "http://app.carbongis.com.au/worldco2/ie/co2.json"
+fn, d = urllib.urlretrieve(url_json_co2_ie)
+f = open(fn,'r')
+json_data = json.load(f)
+f.close()
+world_avg_co2.append({"label":"Ireland","value":str(json_data['co2_intensity'])})
+
 
 world_avg_co2=sorted(world_avg_co2, key=lambda k: float(k['value']),reverse=True)
 print "World:",world_avg_co2
