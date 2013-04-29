@@ -311,5 +311,18 @@ data_array["items"]=world_avg_co2
 send_json(data_array,"WORLD_EMISSIONS_INTENSITY")
 
 
+# Atomspheric concentration in CO2
+url_json_co2_atm = "http://app.carbongis.com.au/worldco2/atmospheric/co2.json"
+fn, d = urllib.urlretrieve(url_json_co2_atm)
+f = open(fn,'r')
+json_data = json.load(f)
+
+data_array = {}
+data_array["title"]="Atmospheric CO2 concentration"
+data_array["current"]=str(round(float(json_data['co2_ppm']),2))
+print "WORLD_ATMOSPHERIC_CO2",data_array
+# Sending the ALL JSON
+send_json(data_array,"WORLD_ATMOSPHERIC_CO2")
+
 
 #u'Black Coal': '11739.47', u'Coal Seam Methane': '304.47', 'All': '23248.7', u'Coal Tailings': '146.0', u'Natural Gas': '1734.14', u'Kerosene': '-0.07', u'Brown Coal': '5259.36', u'Diesel': '0.0', u'Water': '2612.94', u'Natural Gas / Fuel Oil': '121.2', u'Wind': '1151.93', u'Natural Gas / Diesel': '0.0'}
