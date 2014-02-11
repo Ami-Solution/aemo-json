@@ -64,6 +64,6 @@ for state in states:
 	f.close()
 
 # Outputting the dictionary for RTEM application
-jf = open(os.path.join(os.path.dirname(__file__),'aemo-dmd-price-30mn.json'),'w')
+jf = open('../data/dmd-price-30mn.json','w')
 jf.write(json.dumps(info_dict,sort_keys=True, indent=4))
 jf.close()

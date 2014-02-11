@@ -80,6 +80,6 @@ finally:
 f.close()
 
 # Outputting the dictionary for RTEM application
-jf = open(os.path.join(os.path.dirname(__file__),'aemo-forecast-7days.json'),'w')
+jf = open('../data/forecast-7days.json','w')
 jf.write(json.dumps(info_dict,sort_keys=True, indent=4))
 jf.close()

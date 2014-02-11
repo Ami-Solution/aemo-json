@@ -131,6 +131,6 @@ for g in sorted(info_dict.keys()):
 
 
 # Outputting the dictionary for RTEM application
-jf = open(os.path.join(os.path.dirname(__file__),'dispatch.json'),'w')
+jf = open('../data/dispatch.json','w')
 jf.write(json.dumps(info_dict,sort_keys=True, indent=4))
 jf.close()
