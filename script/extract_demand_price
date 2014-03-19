@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /usr/share/apache2/empower.me/data/aemo-json/script
+
+/usr/bin/python /usr/share/apache2/empower.me/data/aemo-json/script/extract-demand-price-30mn.py > /usr/share/apache2/empower.me/data/aemo-json/log/demand.txt
