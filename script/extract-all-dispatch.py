@@ -72,7 +72,7 @@ for a_tag in soup.find_all('a')[1:]:
 	tm = dttm[8:10]+":"+dttm[10:]
 	#print 'Date/time:'+ dttm, dt, tm, i.day
 
-	# Only process if the filename is a multiple of 30!
+	# Only process if the filename is today's and the hour a multiple of 30
 	if dttm[6:8] == str(i.day) and (dttm[10:] == "00" or dttm[10:] == "30"):
 		# Downloading the SCADA file (zipped)
 		fn, d = urllib.urlretrieve(scada_zip_file)
@@ -102,9 +102,9 @@ for a_tag in soup.find_all('a')[1:]:
 					if info_dict.has_key(duid):
 						a = info_dict[duid]
 						if not info_dict[duid].has_key("qty"):
-							info_dict[duid]["qty"]=[[dt+" "+tm,round(qty,2)]]
+							info_dict[duid]["qty"]=[[tm,round(qty,2)]]
 						else:
-							info_dict[duid]["qty"].append([dt+" "+tm,round(qty,2)])
+							info_dict[duid]["qty"].append([tm,round(qty,2)])
 					else:
 						if qty <> 0:
 							print 'Entry exists in SCADA file but not in generator.csv: '+str(duid)+' (dispatching '+str(round(qty,2))+' MW)'
@@ -146,6 +146,6 @@ for g in sorted(info_dict.keys()):
 
 
 # Outputting the dictionary for RTEM application
-jf = open('../data/dispatch.json','w')
+jf = open('../data/all-dispatch.json','w')
 jf.write(json.dumps(info_dict,sort_keys=True))
 jf.close()
