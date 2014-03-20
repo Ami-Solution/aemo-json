@@ -1,5 +1,6 @@
 #!/bin/bash
 
-cd /usr/share/apache2/empower.me/data/aemo-json/script
+BASEDIR=$(dirname $0)
+cd $BASEDIR
 
-/usr/bin/python /usr/share/apache2/empower.me/data/aemo-json/script/extract-demand-price-30mn.py > /usr/share/apache2/empower.me/data/aemo-json/log/demand.txt
+/usr/bin/python $BASEDIR/extract-demand-price-30mn.py > $BASEDIR/../log/demand.txt
