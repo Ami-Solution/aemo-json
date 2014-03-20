@@ -1,5 +1,6 @@
 #!/bin/bash
 
-cd /usr/share/apache2/empower.me/data/aemo-json/script
+BASEDIR=$(dirname $0)
+cd $BASEDIR
 
-/usr/bin/python /usr/share/apache2/empower.me/data/aemo-json/script/extract-forecast-7day.py > /usr/share/apache2/empower.me/data/aemo-json/log/forecast.txt
+/usr/bin/python $BASEDIR/extract-forecast-7day.py > $BASEDIR/../log/forecast.txt
