@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime,timedelta
 import csv
 import urllib, urllib2
 from zipfile import ZipFile
@@ -65,15 +65,17 @@ for a_tag in soup.find_all('a')[1:]:
 	print 'SCADA file is: '+scada_zip_file
 
 	# Get today's date
-	i = datetime.datetime.now()
+	i = datetime.now()
 
 	dttm = ll2.split("/")[-1].split("_")[2]
-	dt = dttm[:4]+"-"+dttm[4:6]+"-"+dttm[6:8]
-	tm = dttm[8:10]+":"+dttm[10:]
+	dto = datetime.strptime(dttm , '%Y%m%d%H%M') + timedelta(hours=1)
+	dt = datetime.strftime(dto,'%Y-%m-%d')
+	tm = datetime.strftime(dto,'%H:%M')
 	#print 'Date/time:'+ dttm, dt, tm, i.day
 
 	# Only process if the filename is today's and the hour a multiple of 30
-	if dttm[6:8] == str(i.day) and (dttm[10:] == "00" or dttm[10:] == "30"):
+	if datetime.strftime(dto,'%d') == str(i.day) and (datetime.strftime(dto,'%M') == "00" or datetime.strftime(dto,'%M') == "30"):
+		last_dto = dto
 		# Downloading the SCADA file (zipped)
 		fn, d = urllib.urlretrieve(scada_zip_file)
 		print 'Local copy (SCADA file) is at: '+fn
@@ -98,7 +100,7 @@ for a_tag in soup.find_all('a')[1:]:
 					duid = row[5]
 					qty = float(row[6])
 					
-					# Building the state dictionary with accumulated quantity
+					# Building the participant array with sequential quantities
 					if info_dict.has_key(duid):
 						a = info_dict[duid]
 						if not info_dict[duid].has_key("qty"):
@@ -108,8 +110,32 @@ for a_tag in soup.find_all('a')[1:]:
 					else:
 						if qty <> 0:
 							print 'Entry exists in SCADA file but not in generator.csv: '+str(duid)+' (dispatching '+str(round(qty,2))+' MW)'
+
 		finally:
 			zf.close()
+
+# We perform a check to make sure all elements are in there
+# There was a case of missing element for Diesel generator in SA
+print "Last DTO:",str(dto)
+correctFactor = 0
+if datetime.strftime(last_dto,'%M')=="30":
+	correctFactor = 1
+
+for u in info_dict:
+	if info_dict[u].has_key("qty"):
+		if len(info_dict[u]["qty"]) < int(datetime.strftime(last_dto,'%H'))*2+correctFactor+1:
+			print 'Missing some elements for participant: '+str(u)
+			# Corrective action: build an element
+			qe_arr = ["00:00","00:30","01:00","01:30","02:00","02:30","03:00","03:30","04:00","04:30","05:00","05:30","06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30"]
+			qe_pos = 0;
+			for qe in info_dict[u]["qty"]:
+				if qe[0] <> qe_arr[qe_pos]:
+					# Insert the missing element here
+					print 'Fixing: '+str(qe_arr[qe_pos])
+					info_dict[u]["qty"].insert(qe_pos,[qe_arr[qe_pos],0.0])
+					print info_dict[u]["qty"]
+				# After correction, moving to the next element
+				qe_pos = qe_pos + 1
 
 # Scanning entries in info_dict that have no dispatch in SCADA file (i.e. that have no dispatch qty)
 for g in sorted(info_dict.keys()):
