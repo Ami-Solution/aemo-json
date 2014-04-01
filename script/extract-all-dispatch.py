@@ -71,10 +71,10 @@ for a_tag in soup.find_all('a')[1:]:
 	dto = datetime.strptime(dttm , '%Y%m%d%H%M') + timedelta(hours=1)
 	dt = datetime.strftime(dto,'%Y-%m-%d')
 	tm = datetime.strftime(dto,'%H:%M')
-	#print 'Date/time:'+ dttm, dt, tm, i.day
+	#print 'Date/time:'+ dttm, dto, dt, tm, i.day, "=", datetime.strftime(dto,'%d')
 
 	# Only process if the filename is today's and the hour a multiple of 30
-	if datetime.strftime(dto,'%d') == str(i.day) and (datetime.strftime(dto,'%M') == "00" or datetime.strftime(dto,'%M') == "30"):
+	if datetime.strftime(dto,'%d').lstrip("0") == str(i.day) and (datetime.strftime(dto,'%M') == "00" or datetime.strftime(dto,'%M') == "30"):
 		last_dto = dto
 		# Downloading the SCADA file (zipped)
 		fn, d = urllib.urlretrieve(scada_zip_file)
@@ -116,7 +116,7 @@ for a_tag in soup.find_all('a')[1:]:
 
 # We perform a check to make sure all elements are in there
 # There was a case of missing element for Diesel generator in SA
-print "Last DTO:",str(dto)
+print "Last DTO:",str(last_dto)
 correctFactor = 0
 if datetime.strftime(last_dto,'%M')=="30":
 	correctFactor = 1
