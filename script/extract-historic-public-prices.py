@@ -72,9 +72,23 @@ out_f.close()
 #  region character varying(5),
 #  rrp numeric(9,2),
 #  CONSTRAINT pk_nem_public_price PRIMARY KEY (id)
-#)
+# )
 
 # The loading command:
 # copy nem_public_price (dort,aemo,settlement_date,settlement_time,region,rrp) 
 # from '/var/lib/tomcat6/webapps/empower.me/data/aemo-json/data/nem_historic_prices.csv'
 # CSV HEADER DELIMITER ';' 
+
+# A reduced table that only has the 30mn (final) spot price:
+#
+# drop table nem_public_price_mini cascade;
+#
+# create table nem_public_price_mini as
+# select 
+#	id, region, settlement_date, settlement_time,rrp
+# from 
+#	nem_public_price 
+# where 
+#	dort='T' and aemo=1
+# order by
+#	region, settlement_date, settlement_time
