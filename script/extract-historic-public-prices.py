@@ -35,6 +35,9 @@ for subdir, dirs, files in os.walk(rootdir):
 		reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
 		zf.close()
 
+		# Some info on the public prices CSV files
+		# http://www.whit.com.au/blog/2012/07/all-you-need-to-analyse-the-electricity-market-pt-3/
+
 		for row in reader:
 			if len(row)>1:
 				# Data rows identified with D flag in first column
